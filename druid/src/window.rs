@@ -310,6 +310,7 @@ impl<T: Data> Window<T> {
                 &self.handle,
                 self.id,
                 self.renderer.borrow().text(),
+                self.renderer.borrow(),
                 self.focus,
             );
             let mut notifications = VecDeque::new();

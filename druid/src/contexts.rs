@@ -54,6 +54,21 @@ macro_rules! impl_context_method {
     };
 }
 
+/// A utility for accessing the GPU via WGPU.
+pub struct GpuAccess<'a> {
+  device: &wgpu::Device,
+  queue: &wgpu::Queue,
+}
+
+impl <'a> GpuAccess<'a> {
+  pub fn device(&self) -> &wgpu::Device {
+    self.device
+  }
+  pub fn queue(&self) -> &wgpu::Queue {
+    self.queue
+  }
+}
+
 /// Static state that is shared between most contexts.
 pub(crate) struct ContextState<'a> {
     pub(crate) command_queue: &'a mut CommandQueue,
@@ -61,6 +76,7 @@ pub(crate) struct ContextState<'a> {
     pub(crate) window_id: WindowId,
     pub(crate) window: &'a WindowHandle,
     pub(crate) text: PietText,
+    pub(crate) renderer: &'a WgpuRenderer,
     /// The id of the widget that currently has focus.
     pub(crate) focus_widget: Option<WidgetId>,
     pub(crate) root_app_data_type: TypeId,
@@ -169,6 +185,15 @@ impl_context_method!(
         /// Get an object which can create text layouts.
         pub fn text(&mut self) -> &mut PietText {
             &mut self.state.text
+        }
+
+        /// Get an object which can provide access to the GPU (necessary for loading
+        /// data etc).
+        pub fn gpu_access(&self) -> GpuAccess {
+            GpuAccess {
+              device: self.state.renderer.device(),
+              queue: self.state.renderer.queue(),
+            }
         }
     }
 );
