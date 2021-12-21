@@ -926,9 +926,10 @@ impl PaintCtx<'_, '_, '_> {
     }
 
     /// Runs the given callback with a [RenderPassCtx] to enable a custom render pass.
-    pub fn custom_render_pass<F>(
-      &mut self, label: &'static str, usage: F) -> Result<(), crate::piet::Error>
-        where F: FnOnce(&mut crate::piet::RenderPassCtx) -> Result<(), crate::piet::Error> {
+    pub fn custom_render_pass<F, E>(
+      &mut self, label: &'static str, usage: F) -> Result<(), E>
+        where F: FnOnce(&mut crate::piet::RenderPassCtx) -> Result<(), E>,
+              E: From<crate::piet::Error> {
       let size = self.size();
       let origin = self.to_window(Point::new(0.0, 0.0));
       let scale = self.render_ctx.renderer().scale();
