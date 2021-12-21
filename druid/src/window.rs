@@ -381,6 +381,7 @@ impl<T: Data> Window<T> {
             &self.handle,
             self.id,
             self.renderer.borrow().text(),
+            self.renderer.borrow(),
             self.focus,
         );
         let mut ctx = LifeCycleCtx {
@@ -407,6 +408,7 @@ impl<T: Data> Window<T> {
             &self.handle,
             self.id,
             self.renderer.borrow().text(),
+            self.renderer.borrow(),
             self.focus,
         );
         let mut update_ctx = UpdateCtx {
@@ -498,6 +500,7 @@ impl<T: Data> Window<T> {
             &self.handle,
             self.id,
             self.renderer.borrow().text(),
+            self.renderer.borrow(),
             self.focus,
         );
         let mut layout_ctx = LayoutCtx {
@@ -550,6 +553,7 @@ impl<T: Data> Window<T> {
             &self.handle,
             self.id,
             self.renderer.borrow().text(),
+            self.renderer.borrow(),
             self.focus,
         );
 

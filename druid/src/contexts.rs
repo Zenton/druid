@@ -55,17 +55,17 @@ macro_rules! impl_context_method {
 }
 
 /// A utility for accessing the GPU via WGPU.
-pub struct GpuAccess<'a> {
-  device: &wgpu::Device,
-  queue: &wgpu::Queue,
+pub struct GpuAccess {
+  device: Rc<crate::piet::wgpu::Device>,
+  queue: Rc<crate::piet::wgpu::Queue>,
 }
 
-impl <'a> GpuAccess<'a> {
-  pub fn device(&self) -> &wgpu::Device {
-    self.device
+impl GpuAccess {
+  pub fn device(&self) -> &crate::piet::wgpu::Device {
+    self.device.as_ref()
   }
-  pub fn queue(&self) -> &wgpu::Queue {
-    self.queue
+  pub fn queue(&self) -> &crate::piet::wgpu::Queue {
+    self.queue.as_ref()
   }
 }
 
@@ -76,7 +76,7 @@ pub(crate) struct ContextState<'a> {
     pub(crate) window_id: WindowId,
     pub(crate) window: &'a WindowHandle,
     pub(crate) text: PietText,
-    pub(crate) renderer: &'a WgpuRenderer,
+    pub(crate) gpu_access: GpuAccess,
     /// The id of the widget that currently has focus.
     pub(crate) focus_widget: Option<WidgetId>,
     pub(crate) root_app_data_type: TypeId,
@@ -189,11 +189,8 @@ impl_context_method!(
 
         /// Get an object which can provide access to the GPU (necessary for loading
         /// data etc).
-        pub fn gpu_access(&self) -> GpuAccess {
-            GpuAccess {
-              device: self.state.renderer.device(),
-              queue: self.state.renderer.queue(),
-            }
+        pub fn gpu_access(&self) -> &GpuAccess {
+            &self.state.gpu_access
         }
     }
 );
@@ -927,6 +924,22 @@ impl PaintCtx<'_, '_, '_> {
             transform: current_transform,
         })
     }
+
+    /// Runs the given callback with a [RenderPassCtx] to enable a custom render pass.
+    pub fn custom_render_pass<F>(
+      &mut self, label: &'static str, usage: F) -> Result<(), crate::piet::Error>
+        where F: FnOnce(&mut crate::piet::RenderPassCtx) -> Result<(), crate::piet::Error> {
+      let size = self.size();
+      let origin = self.to_window(Point::new(0.0, 0.0));
+      let scale = self.render_ctx.renderer().scale();
+      self.render_ctx.custom_render_pass(label, |passctx| {
+        passctx.configure_viewport(
+          (origin.x, origin.y),
+          (size.width, size.height),
+          scale);
+        usage(passctx)
+      })
+    }
 }
 
 impl<'a> ContextState<'a> {
@@ -936,6 +949,7 @@ impl<'a> ContextState<'a> {
         window: &'a WindowHandle,
         window_id: WindowId,
         text: PietText,
+        renderer: std::cell::Ref<'a, WgpuRenderer>,
         focus_widget: Option<WidgetId>,
     ) -> Self {
         ContextState {
@@ -945,6 +959,10 @@ impl<'a> ContextState<'a> {
             window_id,
             focus_widget,
             text,
+            gpu_access: GpuAccess {
+              device: renderer.device().clone(),
+              queue: renderer.queue().clone(),
+            },
             root_app_data_type: TypeId::of::<T>(),
         }
     }
