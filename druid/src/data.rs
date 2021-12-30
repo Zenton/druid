@@ -584,7 +584,7 @@ impl<T: Data> Data for im::Vector<T> {
 }
 
 #[cfg(feature = "im")]
-impl<K: Clone + 'static, V: Data> Data for im::HashMap<K, V> {
+impl<K: Clone + 'static, V: Data, H: 'static> Data for im::HashMap<K, V, H> {
     fn same(&self, other: &Self) -> bool {
         self.ptr_eq(other)
     }
