@@ -25,7 +25,7 @@ use tracing::{error, info, info_span};
 // Automatically defaults to std::time::Instant on non Wasm platforms
 use instant::Instant;
 
-use crate::piet::{Color, Piet, RenderContext};
+use crate::piet::{Piet, RenderContext};
 use crate::shell::{text::InputHandler, Counter, Cursor, Region, TextFieldToken, WindowHandle};
 
 use crate::app::{PendingWindow, WindowSizePolicy};
@@ -570,7 +570,7 @@ impl<T: Data> Window<T> {
             depth: 0,
         };
 
-        let start = std::time::SystemTime::now();
+        let _start = std::time::SystemTime::now();
 
         let root = &mut self.root;
         info_span!("paint").in_scope(|| {
@@ -598,7 +598,7 @@ impl<T: Data> Window<T> {
         //     start.elapsed().unwrap().as_micros()
         // );
 
-        let render_start = std::time::SystemTime::now();
+        let _render_start = std::time::SystemTime::now();
         piet.finish();
         // println!(
         //     "paint render took {}",
@@ -691,7 +691,7 @@ impl<T: Data> Window<T> {
     ///
     /// This will be called from outside the main app state in order to avoid
     /// reentrancy problems.
-    pub(crate) fn ime_invalidation_fn(&self, widget: WidgetId) -> Option<Box<ImeUpdateFn>> {
+    pub(crate) fn ime_invalidation_fn(&self, _widget: WidgetId) -> Option<Box<ImeUpdateFn>> {
         None
         // let token = self
         //     .ime_handlers

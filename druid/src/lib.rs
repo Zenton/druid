@@ -221,8 +221,7 @@ pub use widget::{Widget, WidgetExt, WidgetId};
 pub use win_handler::DruidHandler;
 pub use window::{Window, WindowId};
 
-#[cfg(not(target_arch = "wasm32"))]
-pub(crate) use event::{DebugStateCell, StateCell, StateCheckFn};
+
 
 #[deprecated(since = "0.8.0", note = "import from druid::text module instead")]
 pub use piet::{FontFamily, FontStyle, FontWeight, TextAlignment};

@@ -89,7 +89,7 @@ impl Application {
             event_proxy,
         }));
         let clipboard = Clipboard(Rc::new(RefCell::new(
-            ClipboardContext::new().map_err(|e| Error::WindowDropped)?,
+            ClipboardContext::new().map_err(|_e| Error::WindowDropped)?,
         )));
         let app = Application { state, clipboard };
         GLOBAL_APP.with(|global_app| {
@@ -145,7 +145,7 @@ impl Application {
     /// # Panics
     ///
     /// Panics if the `Application` is already running.
-    pub fn run(self, handler: Option<Box<dyn AppHandler>>) {
+    pub fn run(self, _handler: Option<Box<dyn AppHandler>>) {
         // Make sure this application hasn't run() yet.
         if let Ok(mut state) = self.state.try_borrow_mut() {
             if state.running {

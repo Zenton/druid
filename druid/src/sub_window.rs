@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::app::{PendingWindow, WindowConfig};
+use crate::app::{WindowConfig};
 use crate::commands::{SUB_WINDOW_HOST_TO_PARENT, SUB_WINDOW_PARENT_TO_HOST};
-use crate::lens::Unit;
+
 use crate::widget::prelude::*;
 use crate::win_handler::AppState;
 use crate::{Data, Point, Widget, WidgetExt, WidgetId, WidgetPod, WindowHandle, WindowId};
@@ -67,7 +67,7 @@ impl SubWindowDesc {
 
     pub(crate) fn make_sub_window<T: Data>(
         self,
-        app_state: &mut AppState<T>,
+        _app_state: &mut AppState<T>,
     ) -> Result<WindowHandle, Error> {
         //let sub_window_root = self.sub_window_root;
         //let pending = PendingWindow::new(sub_window_root.lens(Unit::default()));

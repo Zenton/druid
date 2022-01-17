@@ -14,7 +14,7 @@
 
 //! Window building and app lifecycle.
 
-use std::collections::{BTreeMap, HashMap};
+use std::collections::{BTreeMap};
 use std::sync::Arc;
 
 use crate::ext_event::{ExtEventHost, ExtEventSink};
@@ -22,14 +22,13 @@ use crate::kurbo::{Point, Size};
 use crate::menu::MenuManager;
 use crate::shell::{Application, Error as PlatformError, WindowBuilder, WindowHandle, WindowLevel};
 use crate::widget::LabelText;
-use crate::win_handler::{AppHandler, AppState};
+use crate::win_handler::{AppState};
 use crate::window::WindowId;
 use crate::{AppDelegate, Data, Env, Event, LocalizedString, Menu, MouseEvent, Widget};
 
 use druid_shell::kurbo::Vec2;
 use druid_shell::{
-    winit_key, winit_keycode, KbKey, KeyEvent, KeyState, Modifiers, MouseButton, MouseButtons,
-    TimerToken, WindowState, WinitEvent,
+    winit_key, winit_keycode, KeyEvent, KeyState, Modifiers, MouseButton, MouseButtons, WindowState, WinitEvent,
 };
 use winit::event_loop::{ControlFlow, EventLoop};
 
@@ -287,7 +286,7 @@ impl<T: Data> AppLauncher<T> {
                         *control_flow = ControlFlow::Wait;
                     }
                     winit::event::StartCause::ResumeTimeReached {
-                        start,
+                        start: _,
                         requested_resume,
                     } => {
                         if let Some((window_id, token)) = timer_tokens.remove(&requested_resume) {
@@ -300,8 +299,8 @@ impl<T: Data> AppLauncher<T> {
                         }
                     }
                     winit::event::StartCause::WaitCancelled {
-                        start,
-                        requested_resume,
+                        start: _,
+                        requested_resume: _,
                     } => {}
                     _ => (),
                 },
@@ -379,9 +378,9 @@ impl<T: Data> AppLauncher<T> {
                         state.do_winit_window_event(event, &window_id);
                     }
                     winit::event::WindowEvent::CursorMoved {
-                        device_id,
+                        device_id: _,
                         position,
-                        modifiers,
+                        modifiers: _,
                     } => {
                         let scale = state.get_scale(&window_id).unwrap_or(1.0);
                         let mods = if let Some(mods) = state.get_mods(&window_id) {
@@ -407,10 +406,10 @@ impl<T: Data> AppLauncher<T> {
                         state.do_winit_window_event(event, &window_id);
                     }
                     winit::event::WindowEvent::MouseInput {
-                        device_id,
+                        device_id: _,
                         state: mouse_state,
                         button,
-                        modifiers,
+                        modifiers: _,
                     } => {
                         let mods = if let Some(mods) = state.get_mods(&window_id) {
                             mods
@@ -449,8 +448,8 @@ impl<T: Data> AppLauncher<T> {
                     }
                     winit::event::WindowEvent::KeyboardInput {
                         input,
-                        device_id,
-                        is_synthetic,
+                        device_id: _,
+                        is_synthetic: _,
                     } => {
                         // println!("keyboard input {:?}", input);
                         let mods = if let Some(mods) = state.get_mods(&window_id) {

@@ -62,7 +62,7 @@ fn ui_builder() -> impl Widget<AppState> {
     Flex::column().with_child(label).with_child(either)
 }
 
-fn wrapped_slow_function(sink: ExtEventSink, number: u32) {
+fn wrapped_slow_function(_sink: ExtEventSink, _number: u32) {
     //thread::spawn(move || {
     //    let number = slow_function(number);
     //    // Once the slow function is done we can use the event sink (the external handle).

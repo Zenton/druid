@@ -15,8 +15,7 @@
 //! The context types that are passed into various widget methods.
 
 use druid_shell::{
-    kurbo::Shape,
-    piet::{IntoBrush, WgpuRenderer},
+    piet::{WgpuRenderer},
 };
 use std::{
     any::{Any, TypeId},

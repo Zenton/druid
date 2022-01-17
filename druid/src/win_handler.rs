@@ -15,14 +15,14 @@
 //! The implementation of the WinHandler trait (druid-shell integration).
 
 use std::any::{Any, TypeId};
-use std::cell::{Ref, RefCell};
+use std::cell::{RefCell};
 use std::collections::{HashMap, VecDeque};
 use std::rc::Rc;
 
 use crate::kurbo::Size;
-use crate::piet::Piet;
+
 use crate::shell::{
-    text::InputHandler, Application, FileDialogToken, FileInfo, IdleToken, MouseEvent, Region,
+    text::InputHandler, Application, FileDialogToken, FileInfo, IdleToken, MouseEvent,
     Scale, TextFieldToken, WinHandler, WindowHandle,
 };
 
@@ -33,14 +33,14 @@ use crate::menu::{ContextMenu, MenuItemId, MenuManager};
 use crate::window::{ImeUpdateFn, Window};
 use crate::{
     Command, Data, Env, Event, Handled, InternalEvent, KeyEvent, PlatformError, Selector, Target,
-    TimerToken, WidgetId, WindowDesc, WindowId,
+    TimerToken, WidgetId, WindowId,
 };
 
 use crate::app::{PendingWindow, WindowConfig};
 use crate::command::sys as sys_cmd;
 use druid_shell::kurbo::Point;
 use druid_shell::{Modifiers, MouseButtons, WindowBuilder, WinitEvent};
-use winit::event_loop::{EventLoop, EventLoopProxy};
+use winit::event_loop::{EventLoop};
 
 pub(crate) const RUN_COMMANDS_TOKEN: IdleToken = IdleToken::new(1);
 
@@ -457,7 +457,7 @@ impl<T: Data> InnerAppState<T> {
         // we send `update` to all windows, not just the active one:
         for window in self.windows.iter_mut() {
             window.update(&mut self.command_queue, &self.data, &self.env);
-            if let Some(focus_change) = window.ime_focus_change.take() {
+            if let Some(_focus_change) = window.ime_focus_change.take() {
                 // we need to call this outside of the borrow, so we create a
                 // closure that takes the correct window handle. yes, it feels
                 // weird.
@@ -807,7 +807,7 @@ impl<T: Data> AppState<T> {
         }
     }
 
-    fn show_open_panel(&mut self, cmd: Command, window_id: WindowId) {
+    fn show_open_panel(&mut self, _cmd: Command, _window_id: WindowId) {
         // let options = cmd.get_unchecked(sys_cmd::SHOW_OPEN_PANEL).to_owned();
         // let handle = self
         //     .inner
@@ -833,7 +833,7 @@ impl<T: Data> AppState<T> {
         // }
     }
 
-    fn show_save_panel(&mut self, cmd: Command, window_id: WindowId) {
+    fn show_save_panel(&mut self, _cmd: Command, _window_id: WindowId) {
         // let options = cmd.get_unchecked(sys_cmd::SHOW_SAVE_PANEL).to_owned();
         // let handle = self
         //     .inner
@@ -876,7 +876,7 @@ impl<T: Data> AppState<T> {
         self.inner.borrow_mut().do_update();
     }
 
-    fn new_window(&mut self, cmd: Command) -> Result<(), Box<dyn std::error::Error>> {
+    fn new_window(&mut self, _cmd: Command) -> Result<(), Box<dyn std::error::Error>> {
         // let desc = cmd.get_unchecked(sys_cmd::NEW_WINDOW);
         // // The NEW_WINDOW command is private and only druid can receive it by normal means,
         // // thus unwrapping can be considered safe and deserves a panic.

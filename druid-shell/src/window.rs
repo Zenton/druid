@@ -26,10 +26,10 @@ use crate::keyboard::KeyEvent;
 use crate::kurbo::{Insets, Point, Rect, Size};
 use crate::menu::Menu;
 use crate::mouse::{Cursor, CursorDesc, MouseEvent};
-use crate::region::Region;
+
 use crate::scale::Scale;
 use crate::text::{Event, InputHandler};
-use piet_wgpu::PietText;
+
 use raw_window_handle::{HasRawWindowHandle, RawWindowHandle};
 use winit::dpi::{LogicalPosition, LogicalSize};
 use winit::event_loop::{EventLoopProxy, EventLoopWindowTarget};
@@ -107,7 +107,7 @@ impl IdleHandle {
     ///
     /// Note: the name "idle" suggests that it will be scheduled with a lower
     /// priority than other UI events, but that's not necessarily the case.
-    pub fn add_idle<F>(&self, callback: F)
+    pub fn add_idle<F>(&self, _callback: F)
     where
         F: FnOnce(&mut dyn WinHandler) + Send + 'static,
     {
@@ -230,10 +230,10 @@ impl WindowHandle {
     /// function in response to every relevant [`WinHandler::mouse_move`].
     ///
     /// This is currently only implemented on Windows.
-    pub fn handle_titlebar(&self, val: bool) {}
+    pub fn handle_titlebar(&self, _val: bool) {}
 
     /// Set whether the window should show titlebar.
-    pub fn show_titlebar(&self, show_titlebar: bool) {}
+    pub fn show_titlebar(&self, _show_titlebar: bool) {}
 
     /// Sets the position of the window in [display points](crate::Scale), relative to the origin of the
     /// virtual screen.
@@ -320,7 +320,7 @@ impl WindowHandle {
     /// We do not currently have a getter method, mostly because the system's levels aren't a
     /// perfect one-to-one map to `druid_shell`'s levels. A getter method may be added in the
     /// future.
-    pub fn set_level(&self, level: WindowLevel) {}
+    pub fn set_level(&self, _level: WindowLevel) {}
 
     /// Bring this window to the front of the window stack and give it focus.
     pub fn bring_to_front_and_focus(&self) {}
@@ -341,7 +341,7 @@ impl WindowHandle {
     }
 
     /// Request invalidation of a region of the window.
-    pub fn invalidate_rect(&self, rect: Rect) {
+    pub fn invalidate_rect(&self, _rect: Rect) {
         self.0.request_redraw();
     }
 
@@ -351,7 +351,7 @@ impl WindowHandle {
     }
 
     /// Set the top-level menu for this window.
-    pub fn set_menu(&self, menu: Menu) {}
+    pub fn set_menu(&self, _menu: Menu) {}
 
     /// Get access to a type that can perform text layout.
     // pub fn text(&self) -> PietText {
@@ -375,13 +375,13 @@ impl WindowHandle {
     ///
     /// If `token` is the text field currently focused, the platform automatically
     /// sets the focused field to `None`.
-    pub fn remove_text_field(&self, token: TextFieldToken) {}
+    pub fn remove_text_field(&self, _token: TextFieldToken) {}
 
     /// Notify the platform that the focused text input receiver has changed.
     ///
     /// This must be called any time focus changes to a different text input, or
     /// when focus switches away from a text input.
-    pub fn set_focused_text_field(&self, active_field: Option<TextFieldToken>) {}
+    pub fn set_focused_text_field(&self, _active_field: Option<TextFieldToken>) {}
 
     /// Notify the platform that some text input state has changed, such as the
     /// selection, contents, etc.
@@ -389,7 +389,7 @@ impl WindowHandle {
     /// This method should *never* be called in response to edits from a
     /// `InputHandler`; only in response to changes from the application:
     /// scrolling, remote edits, etc.
-    pub fn update_text_field(&self, token: TextFieldToken, update: Event) {}
+    pub fn update_text_field(&self, _token: TextFieldToken, _update: Event) {}
 
     /// Schedule a timer.
     ///
@@ -422,7 +422,7 @@ impl WindowHandle {
         self.0.set_cursor_icon(cursor);
     }
 
-    pub fn make_cursor(&self, desc: &CursorDesc) -> Option<Cursor> {
+    pub fn make_cursor(&self, _desc: &CursorDesc) -> Option<Cursor> {
         None
     }
 
@@ -431,7 +431,7 @@ impl WindowHandle {
     /// This won't block immediately; the file dialog will be shown whenever control returns to
     /// `druid-shell`, and the [`WinHandler::open_file`] method will be called when the dialog is
     /// closed.
-    pub fn open_file(&mut self, options: FileDialogOptions) -> Option<FileDialogToken> {
+    pub fn open_file(&mut self, _options: FileDialogOptions) -> Option<FileDialogToken> {
         None
     }
 
@@ -440,14 +440,14 @@ impl WindowHandle {
     /// This won't block immediately; the file dialog will be shown whenever control returns to
     /// `druid-shell`, and the [`WinHandler::save_as`] method will be called when the dialog is
     /// closed.
-    pub fn save_as(&mut self, options: FileDialogOptions) -> Option<FileDialogToken> {
+    pub fn save_as(&mut self, _options: FileDialogOptions) -> Option<FileDialogToken> {
         None
     }
 
     /// Display a pop-up menu at the given position.
     ///
     /// `pos` is in the coordinate space of the window.
-    pub fn show_context_menu(&self, menu: Menu, pos: Point) {}
+    pub fn show_context_menu(&self, _menu: Menu, _pos: Point) {}
 
     /// Get a handle that can be used to schedule an idle task.
     pub fn get_idle_handle(&self) -> Option<IdleHandle> {
@@ -488,7 +488,7 @@ impl WindowBuilder {
     /// Set the [`WinHandler`] for this window.
     ///
     /// This is the object that will receive callbacks from this window.
-    pub fn set_handler(&mut self, handler: Box<dyn WinHandler>) {}
+    pub fn set_handler(&mut self, _handler: Box<dyn WinHandler>) {}
 
     /// Set the window's initial drawing area size in [display points].
     ///
@@ -542,12 +542,12 @@ impl WindowBuilder {
     }
 
     #[cfg(not(target_os = "macos"))]
-    pub fn show_titlebar(mut self, show_titlebar: bool) -> Self {
+    pub fn show_titlebar(mut self, _show_titlebar: bool) -> Self {
         self
     }
 
     /// Set whether the window background should be transparent
-    pub fn set_transparent(&mut self, transparent: bool) {}
+    pub fn set_transparent(&mut self, _transparent: bool) {}
 
     /// Sets the initial window position in [display points], relative to the origin of the
     /// virtual screen.
@@ -561,7 +561,7 @@ impl WindowBuilder {
     }
 
     /// Sets the initial [`WindowLevel`].
-    pub fn set_level(&mut self, level: WindowLevel) {}
+    pub fn set_level(&mut self, _level: WindowLevel) {}
 
     /// Set the window's initial title.
     pub fn set_title(mut self, title: impl Into<String>) -> Self {
@@ -570,7 +570,7 @@ impl WindowBuilder {
     }
 
     /// Set the window's menu.
-    pub fn set_menu(&mut self, menu: Menu) {}
+    pub fn set_menu(&mut self, _menu: Menu) {}
 
     /// Sets the initial state of the window.
     pub fn set_window_state(mut self, state: WindowState) -> Self {

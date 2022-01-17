@@ -47,7 +47,7 @@ impl Menu {
     // }
 
     /// Add the provided `Menu` as a submenu of self, with the provided title.
-    pub fn add_dropdown(&mut self, menu: Menu, text: &str, enabled: bool) {}
+    pub fn add_dropdown(&mut self, _menu: Menu, _text: &str, _enabled: bool) {}
 
     /// Add an item to this menu.
     ///
@@ -66,11 +66,11 @@ impl Menu {
     /// [`HotKey`]: struct.HotKey.html
     pub fn add_item(
         &mut self,
-        id: u32,
-        text: &str,
-        key: Option<&HotKey>,
-        enabled: bool,
-        selected: bool,
+        _id: u32,
+        _text: &str,
+        _key: Option<&HotKey>,
+        _enabled: bool,
+        _selected: bool,
     ) {
     }
 

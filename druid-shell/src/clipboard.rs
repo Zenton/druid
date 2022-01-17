@@ -146,7 +146,7 @@ impl Clipboard {
     }
 
     /// Put multi-format data on the system clipboard.
-    pub fn put_formats(&mut self, formats: &[ClipboardFormat]) {
+    pub fn put_formats(&mut self, _formats: &[ClipboardFormat]) {
         // self.0.put_formats(formats)
     }
 
@@ -157,7 +157,7 @@ impl Clipboard {
 
     /// Given a list of supported clipboard types, returns the supported type which has
     /// highest priority on the system clipboard, or `None` if no types are supported.
-    pub fn preferred_format(&self, formats: &[FormatId]) -> Option<FormatId> {
+    pub fn preferred_format(&self, _formats: &[FormatId]) -> Option<FormatId> {
         None
     }
 
@@ -168,7 +168,7 @@ impl Clipboard {
     ///
     /// [`Clipboard::preferred_format`]: struct.Clipboard.html#method.preferred_format
     /// [`FormatId`]: type.FormatId.html
-    pub fn get_format(&self, format: FormatId) -> Option<Vec<u8>> {
+    pub fn get_format(&self, _format: FormatId) -> Option<Vec<u8>> {
         None
     }
 

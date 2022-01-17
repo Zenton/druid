@@ -41,7 +41,7 @@ pub fn main() {
     // If we want to create commands from another thread `launcher.get_external_handle()`
     // should be used. For sending commands from within widgets you can always call
     // `ctx.submit_command`
-    let event_sink = launcher.get_external_handle();
+    let _event_sink = launcher.get_external_handle();
     // We create a new thread and generate colours in it.
     // This happens on a second thread so that we can run the UI in the
     // main thread. Generating some colours nicely follows the pattern for what
