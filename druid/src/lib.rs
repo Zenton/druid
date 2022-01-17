@@ -131,12 +131,15 @@
     unsafe_code,
     clippy::trivially_copy_pass_by_ref
 )]
-#![warn(missing_docs)]
-#![allow(clippy::new_ret_no_self, clippy::needless_doctest_main)]
+// #![warn(missing_docs)]
+#![allow(clippy::new_ret_no_self, clippy::needless_doctest_main, dead_code)] // (Neu) dead_code shouldn't be allowed, but just trying to ignore warnings to stop them popping up in dependents.
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/linebender/druid/screenshots/images/doc_logo.png"
 )]
+
+#[macro_use]
+extern crate log;
 
 // Allows to use macros from druid_derive in this crate
 extern crate self as druid;

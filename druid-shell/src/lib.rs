@@ -27,7 +27,7 @@
 //! backend, it will avoid using the Present extension.
 
 #![warn(broken_intra_doc_links)]
-#![allow(clippy::new_without_default)]
+#![allow(clippy::new_without_default, dead_code)] // (Neu) dead_code shouldn't be allowed, but just trying to ignore warnings to stop them popping up in dependents.
 #![deny(clippy::trivially_copy_pass_by_ref)]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/linebender/druid/screenshots/images/doc_logo.png"
@@ -38,6 +38,9 @@
 // The `target_os` requirement is there to exclude anything `wasm` like.
 #[cfg(all(target_os = "linux", feature = "gtk"))]
 extern crate gtk_rs as gtk;
+
+#[macro_use]
+extern crate log;
 
 // Reexport the version of `image` we are using.
 #[cfg(feature = "image")]

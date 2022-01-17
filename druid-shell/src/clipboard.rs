@@ -141,7 +141,9 @@ impl Debug for Clipboard {
 impl Clipboard {
     /// Put a string onto the system clipboard.
     pub fn put_string(&mut self, s: impl AsRef<str>) {
-        self.0.borrow_mut().set_contents(s.as_ref().to_string());
+        if let Err(e) = self.0.borrow_mut().set_contents(s.as_ref().to_string()) {
+          warn!("Error setting clipboard: {}", e);
+        }
         // self.0.put_string(s);
     }
 

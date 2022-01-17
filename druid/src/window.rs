@@ -599,7 +599,9 @@ impl<T: Data> Window<T> {
         // );
 
         let _render_start = std::time::SystemTime::now();
-        piet.finish();
+        if let Err(e) = piet.finish() {
+          warn!("Error finishing piet: {}", e);
+        }
         // println!(
         //     "paint render took {}",
         //     render_start.elapsed().unwrap().as_micros()

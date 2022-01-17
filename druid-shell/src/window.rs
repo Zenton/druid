@@ -117,7 +117,9 @@ impl IdleHandle {
     /// be called with the `token` that was passed in.
 
     pub fn schedule_idle(&mut self, token: IdleToken) {
-        self.0.send_event(WinitEvent::Idle(token));
+        if let Err(e) = self.0.send_event(WinitEvent::Idle(token)) {
+          warn!("Error sending winit event: {}", e);
+        }
     }
 }
 
@@ -403,8 +405,10 @@ impl WindowHandle {
     /// requiring precision.
     pub fn request_timer(&self, deadline: Duration) -> TimerToken {
         let token = TimerToken::next();
-        self.1
-            .send_event(WinitEvent::Timer(self.id(), token, deadline));
+        if let Err(e) = self.1
+            .send_event(WinitEvent::Timer(self.id(), token, deadline)) {
+          warn!("Error sending winit event: {}", e);
+        }
         token
     }
 

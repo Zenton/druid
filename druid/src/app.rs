@@ -380,7 +380,7 @@ impl<T: Data> AppLauncher<T> {
                     winit::event::WindowEvent::CursorMoved {
                         device_id: _,
                         position,
-                        modifiers: _,
+                        ..
                     } => {
                         let scale = state.get_scale(&window_id).unwrap_or(1.0);
                         let mods = if let Some(mods) = state.get_mods(&window_id) {
@@ -409,7 +409,7 @@ impl<T: Data> AppLauncher<T> {
                         device_id: _,
                         state: mouse_state,
                         button,
-                        modifiers: _,
+                        ..
                     } => {
                         let mods = if let Some(mods) = state.get_mods(&window_id) {
                             mods
