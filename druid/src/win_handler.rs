@@ -700,6 +700,7 @@ impl<T: Data> AppState<T> {
                 .map(|w| w.clone())
         };
         if let Some(window_id) = window_id {
+            self.prepare_paint_window(window_id);
             self.paint_window(window_id);
         }
     }
