@@ -613,7 +613,7 @@ impl WindowConfig {
 
     /// Apply this window configuration to the passed in WindowBuilder
     pub fn apply_to_builder(&self, builder: WindowBuilder) -> WindowBuilder {
-        let mut builder = if let Some(resizable) = self.resizable {
+        let builder = if let Some(resizable) = self.resizable {
             builder.resizable(resizable)
         } else {
             builder
